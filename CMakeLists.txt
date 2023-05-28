@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.6)
 
 project(hv VERSION 1.3.1)
 
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 option(BUILD_SHARED "build shared library" ON)
 option(BUILD_STATIC "build static library" ON)
 
