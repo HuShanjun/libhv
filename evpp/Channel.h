@@ -178,6 +178,29 @@ public:
         return async ? hio_close_async(io_) : hio_close(io_);
     }
 
+    virtual void onRead(void* data, int len){
+        if(onread) {
+			Buffer buffer(data, len);
+			onread(&buffer);
+        }
+    }
+
+    virtual void onWrite(const void* data, int len) {
+		if (onwrite) {
+			Buffer buf((void*)data, len);
+			onwrite(&buf);
+		}
+	}
+
+    virtual void onClose(){
+        if(onclose){
+            onclose();
+        }
+    }
+
+
+
+
 public:
     hio_t*      io_;
     int         fd_;
@@ -199,17 +222,15 @@ public:
 private:
     static void on_read(hio_t* io, void* data, int readbytes) {
         Channel* channel = (Channel*)hio_context(io);
-        if (channel && channel->onread) {
-            Buffer buf(data, readbytes);
-            channel->onread(&buf);
+        if (channel) {
+            channel->onRead(data, readbytes);
         }
     }
 
     static void on_write(hio_t* io, const void* data, int writebytes) {
         Channel* channel = (Channel*)hio_context(io);
-        if (channel && channel->onwrite) {
-            Buffer buf((void*)data, writebytes);
-            channel->onwrite(&buf);
+        if (channel) {
+            channel->onWrite(data, writebytes);
         }
     }
 
@@ -217,9 +238,7 @@ private:
         Channel* channel = (Channel*)hio_context(io);
         if (channel) {
             channel->status = CLOSED;
-            if (channel->onclose) {
-                channel->onclose();
-            }
+            channel->onClose();
         }
     }
 };
@@ -344,14 +363,22 @@ public:
         return SOCKADDR_STR(addr, buf);
     }
 
+    virtual void onConnect(){
+        if(onconnect){
+            onconnect();
+        }
+    }
+
+    virtual void onCheck(){
+    }
+
+
 private:
     static void on_connect(hio_t* io) {
         SocketChannel* channel = (SocketChannel*)hio_context(io);
         if (channel) {
             channel->status = CONNECTED;
-            if (channel->onconnect) {
-                channel->onconnect();
-            }
+            channel->onConnect();
         }
     }
 
