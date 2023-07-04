@@ -29,7 +29,7 @@ option(WITH_OPENSSL "with openssl library" OFF)
 option(WITH_GNUTLS  "with gnutls library"  OFF)
 option(WITH_MBEDTLS "with mbedtls library" OFF)
 
-option(WITH_KCP "with kcp" OFF)
+option(WITH_KCP "with kcp" ON)
 
 if(WIN32)
     option(ENABLE_WINDUMP "Windows MiniDumpWriteDump" OFF)

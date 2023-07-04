@@ -1,4 +1,4 @@
-/*
+﻿/*
  * UdpClient_test.cpp
  *
  * @build   make evpp
@@ -15,13 +15,14 @@
 using namespace hv;
 
 int main(int argc, char* argv[]) {
-    if (argc < 2) {
-        printf("Usage: %s port\n", argv[0]);
-        return -10;
-    }
-    int port = atoi(argv[1]);
+    printf("%s\n", argv[0]);
+    int port = 1234;
+    int conv = atoi(argv[1]);
 
     UdpClient cli;
+    kcp_setting_t setting;
+    setting.conv = conv;
+    cli.setKcp(&setting);
     int sockfd = cli.createsocket(port);
     if (sockfd < 0) {
         return -20;

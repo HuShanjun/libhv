@@ -1,4 +1,4 @@
-/*
+﻿/*
  * udp echo server
  *
  * @build   make examples
@@ -20,7 +20,7 @@
  * @client  bin/nc -k 127.0.0.1 1234
  *
  */
-#define TEST_KCP 0
+#define TEST_KCP 1
 
 static void on_recvfrom(hio_t* io, void* buf, int readbytes) {
     printf("on_recvfrom fd=%d readbytes=%d\n", hio_fd(io), readbytes);
